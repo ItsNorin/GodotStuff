@@ -2,6 +2,8 @@
 
 Turns pixels into circles.
 
+![](Sample.gif)
+
 ## Features:
 - Adjustable radius
 - Optional animated jiggle with speed and min/max radius
