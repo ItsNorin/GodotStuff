@@ -5,14 +5,23 @@ script/source = "
 "
 
 [sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
+code = "// Created by ItsNorin: https://github.com/ItsNorin/GodotStuff
 
+shader_type canvas_item;
+
+// Color for any region that isn't a circle
 uniform vec4 backgroundColor : hint_color = vec4(0,0,0,0);
+// Resizes circles based on alpha value
 uniform bool alphaBasedSizing = true;
+// Animates circle radii
 uniform bool pulsing = false;
+// Minimum radius, only used for pulsing
 uniform float radiusMin: hint_range(0,1.4142135624) = 0;
+// Maximum radius for animation or radius for non-animated circles
 uniform float radiusMax: hint_range(0,1.4142135624) = 1;
+// Speed of animation
 uniform float pulseSpeed: hint_range(0,100) = 1;
+// X and Y jiggle for weird effects
 uniform float xJiggle: hint_range(0,100) = 0;
 uniform float yJiggle: hint_range(0,100) = 0;
 

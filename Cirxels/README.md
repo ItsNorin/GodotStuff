@@ -1,5 +1,7 @@
 # Cirxels Shader
 
+By ItsNorin: https://github.com/ItsNorin/GodotStuff
+
 Turns pixels into circles.
 
 ![](Sample.gif)
