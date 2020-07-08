@@ -1,0 +1,61 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+
+[sub_resource type="GDScript" id=2]
+script/source = "
+"
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec4 backgroundColor : hint_color = vec4(0,0,0,0);
+uniform bool alphaBasedSizing = true;
+uniform bool pulsing = false;
+uniform float radiusMin: hint_range(0,1.4142135624) = 0;
+uniform float radiusMax: hint_range(0,1.4142135624) = 1;
+uniform float pulseSpeed: hint_range(0,100) = 1;
+uniform float xJiggle: hint_range(0,100) = 0;
+uniform float yJiggle: hint_range(0,100) = 0;
+
+// Round a number 'u' ranging [0,1] to nearest pixel position in 'size' pixels [1,inf)
+float roundToPixel(float u, int size) {
+	return (floor(u * float(size)) + 0.5) / float(size);
+}
+
+void fragment() {
+	ivec2 texSize = textureSize(TEXTURE, 0);
+	vec2 center;
+	center.x = roundToPixel(UV.x, texSize.x);
+	center.y = roundToPixel(UV.y, texSize.y);
+	vec4 cur_color = texture(TEXTURE, center);
+	
+	float r = radiusMax;
+	
+	if(pulsing) 
+		r = radiusMin + 0.5 * (radiusMax - radiusMin) * 
+			(1.0 + sin((TIME + xJiggle*UV.x - yJiggle*UV.y) * pulseSpeed));
+	
+	if(alphaBasedSizing) {
+		r *= cur_color.a;
+		cur_color.a = 1.;
+	}
+	
+	r *= 0.5 / float(texSize.x);
+	
+	if (distance(UV, center) < r)
+		COLOR = cur_color;
+	else
+		COLOR = backgroundColor;
+}"
+custom_defines = ""
+
+[resource]
+shader = SubResource( 1 )
+shader_param/backgroundColor = Color( 0, 0, 0, 0 )
+shader_param/alphaBasedSizing = true
+shader_param/pulsing = true
+shader_param/radiusMin = 0.828
+shader_param/radiusMax = 1.0
+shader_param/pulseSpeed = 4.0
+shader_param/xJiggle = 20.0
+shader_param/yJiggle = 8.0
+script = SubResource( 2 )
